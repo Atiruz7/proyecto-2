@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Crear el archivo técnicos_preparados.txt en el home del usuario y establecer permisos 744
+touch ~/técnicos_preparados.txt
+chmod 744 ~/técnicos_preparados.txt
+
 while true; do
     opcion=$(zenity --list --title="Menú de operaciones tecnológicas" --column="Opción" --column="Descripción" \
         1 "Crear grupos de técnicos" \
@@ -8,7 +12,8 @@ while true; do
         4 "Crear árbol de datos" \
         5 "Visualizar técnicos preparados" \
         6 "Realizar salvaguarda de datos" \
-        7 "Salir" \
+        7 "Conexion remota entre equipos" \
+        8 "Salir" \
         --height=400 --width=400)
 
     case $opcion in
@@ -80,8 +85,23 @@ while true; do
                 zenity --error --text="Error: usuario no existe"
             fi
             ;;
-        7)
-            exit 0
+7)
+    if zenity --question --text="¿Desea abrir AnyDesk?" ; then
+        if command -v anydesk &> /dev/null; then
+            # Ejecutar AnyDesk sin usar sudo
+            anydesk &
+            zenity --info --text="AnyDesk abierta."
+        else
+            zenity --error --text="AnyDesk no está instalado."
+        fi
+    else
+        zenity --info --text="Operación cancelada."
+    fi
+    ;;
+
+
+         8)
+		 exit 0
             ;;
         *)
             zenity --error --text="Opción no válida"
